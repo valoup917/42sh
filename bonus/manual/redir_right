@@ -1,0 +1,15 @@
+REDIRRIGHT                                          42sh Programmer's Manual                                        REDIRRIGHT
+
+NAME
+        redirection gauche : Écrit le contenu de la commande dans un fichier.
+
+DESCRIPTION
+
+        La redirection simple vers la droite, ecrit le contenu de la commande qui precede
+        la redirection vers la droite, dans un fichier precise apres la redirection vers
+        droite. Si le fichier n'existe pas, le fichier se creer et ecrit le contenu de la
+        commande dans le fichier, si le fichier existe, la commande precise ecrasera alors
+        tous le contenu du fichier existant.
+
+        Exemple de commande :
+            ls > file.txt

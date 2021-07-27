@@ -1,0 +1,17 @@
+DB_REDIRLEFT                                          42sh Programmer's Manual                                        DB_REDIRLEFT
+
+NAME
+        double redirection gauche : Recherche le nom qui sera mit apres l'element.
+
+DESCRIPTION
+
+        La double redirection vers la gauche, creer une boucle dans le terminal de l'utilisateur.
+        Lorsque l'utilisateur est present dans la boucle, pour en sortir, il est necessaire pour
+        lui d'ecrire le mot qui a ete mit apres l'element de la double redirection. Apres que le
+        mot ai ete trouve, l'utilisateur quitte alors la boucle, et executera la commande qui a
+        ete place juste avant l'element.
+        ATTENTION : Il est important de note qu'un mot doit etre mit a droite de l'element et qu'une
+        commande ai ete mit a gauche de l'element.
+
+        Exemple de commande : 
+            ls << exemple

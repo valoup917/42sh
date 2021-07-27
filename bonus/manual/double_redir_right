@@ -1,0 +1,15 @@
+DB_REDIRRIGHT                                          42sh Programmer's Manual                                        DB_REDIRRIGHT
+
+NAME
+        double redirection droite : Écrit le contenu de la commande dans un fichier.
+
+DESCRIPTION
+
+        La redirection simple vers la droite, ecrit le contenu de la commande qui precede
+        la redirection vers la droite, dans un fichier precise apres la redirection vers
+        droite. Si le fichier n'existe pas, le fichier se creer et ecrit le contenu de la
+        commande dans le fichier, si le fichier existe, la commande precise ecrira alors,
+        a la suite du fichier, le contenu de la commande precise.
+
+        Exemple de commande :
+            ls >> file.txt

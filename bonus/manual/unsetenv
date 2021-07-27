@@ -1,0 +1,20 @@
+UNSETENV                                          42sh Programmer's Manual                                        UNSETENV
+
+NAME
+        unsetenv : Retire une ou plusieurs variable a l'environnement.
+
+DESCRIPTION
+        
+        La commande 'unsetenv' permet, si la variable existe, de retirer cette element presente
+        dans l'environnement. Il est aussi possible de retirer plusieurs element de l'environnement
+        a partir de la meme commande.
+
+FLAGS
+
+        unsetenv :
+                Si 'unsetenv' est execute seul, elle affichera un message d'erreur sur la
+                sortie standard.
+
+        unsetenv [...] :
+                Si la commande 'unsetenv', suivi de un ou plusieurs variable(s), est execute
+                elle retirera la ou les element(s) presente(nt) dans l'environnement.

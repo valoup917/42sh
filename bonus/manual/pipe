@@ -1,0 +1,13 @@
+PIPE                                          42sh Programmer's Manual                                        PIPE
+
+NAME
+        pipe : Creer un lien entre la sortie standard et l'entree standard.
+
+DESCRIPTION
+
+        Lorsque sur la ligne de commande, l'element 'pipe' ('|') a ete trouve sur la ligne de commande,
+        celle-ci est percue comme etant presente pour passer le resultat d'une commande a une autre
+        commande.
+
+        Exemple de commande :
+            cat Makefile | grep o

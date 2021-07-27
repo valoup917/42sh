@@ -1,0 +1,9 @@
+HISTORY                                          42sh Programmer's Manual                                        HISTORY
+
+NAME
+        history : Affiche les anciennes commandes executees.
+
+DESCRIPTION
+
+        La commande 'history' permet d'afficher sur la sortie standard, toutes les commandes
+        qui ont ete autrefois executees par l'utilisateur.

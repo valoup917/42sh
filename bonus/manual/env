@@ -1,0 +1,9 @@
+ENV                                          42sh Programmer's Manual                                        ENV
+
+NAME
+        env : Affiche toutes les variables de l'environnement.
+
+DESCRIPTION
+
+        La commande 'env' permet d'afficher l'ensemble des variables presente dans l'environnement
+        de base de l'utilisateur.

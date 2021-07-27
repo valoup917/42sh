@@ -1,0 +1,18 @@
+ALIAS                                          42sh Programmer's Manual                                        ALIAS
+
+NAME
+        alias : Creer un raccourci vers une commande.
+
+DESCRIPTION
+
+        La commande alias permet a l'utilisateur de creer une nouvelle commande vers une commande
+        existante.
+
+FLAGS
+
+        alias :
+                Affiche toutes les commandes qui ont ete creees comme raccourci par l'utilisateur.
+
+        alias [NAME] [COMMAND] :
+                Recupere la COMMAND qui sera afficher sur la sortie standard de l'utilisateur lorsque
+                celui-ci execute le nouveau nom donne a NAME.

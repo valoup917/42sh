@@ -1,0 +1,14 @@
+SEMICOLON                                          42sh Programmer's Manual                                        SEMICOLON
+
+
+NAME
+        semicolon : Éxecute la commande suivant la premiere.
+
+DESCRIPTION
+
+        Lorsque sur la ligne de commande, l'element 'semicolon' (';') a ete trouve sur la ligne de commande,
+        la commande qui suit cette element ainsi que celle qui la precede, seront execute sur la sortie
+        standard, l'une a la suite de l'autre (ou des autres si plusieurs semicolon sont present).
+
+        Exemple de commande :
+            ls;ls -d || ls; lsd -l ; ls -l ;ls -R || ls;;;ls -a

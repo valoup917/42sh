@@ -1,0 +1,10 @@
+EXIT                                          42sh Programmer's Manual                                        EXIT
+
+NAME
+        exit : Permet de sortir de la ligne de commande de base du terminal.
+
+DESCRIPTION
+
+        La commande 'exit' permet a l'utilisateur de kill le terminal dans lequel il est present.
+        Si plusieurs terminaux ont ete ouvert a la suite, plusieurs exit a la suite seront
+        demandes pour pouvoir quitter tous les terminaux.

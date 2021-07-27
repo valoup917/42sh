@@ -1,0 +1,30 @@
+SETENV                                          42sh Programmer's Manual                                        SETENV
+
+NAME
+        setenv : Change ou ajoute une variable a l'environnement.
+
+DESCRIPTION
+
+        La commande 'setenv' permet de changer une variable dans l'environnement si celle-ci est
+        presente dans l'environnement. Si la variable n'existe pas dans l'environnement, elle est
+        ajoute dans l'environnement a la fin de toutes les variables.
+
+EXEMPLES
+
+        setenv :
+                Si la commande est execute sans autres parametres, elle affichera l'environnement
+                de base.
+        
+        setenv [NAME] :
+                La commande 'setenv' suivi d'une variable compose de lettre alphanumerique
+                (non numerique pour le premier caractere), ajoutera la variable dans l'
+                environnement.
+        
+        setenv [NAME] [VALUE] :
+                La commande 'setenv' suivi d'une variable compose de lettre alphanumerique
+                (non numerique pour le premier caractere) et d'une autre variable, ajoutera la
+                variable dans l'environnement.
+        
+        setenv [NAME] [VALUE] [OTHER] :
+                Si 3 parametres (ou plus) sont donnes a la commande 'setenv', un
+                message d'erreur sera alors afficher sur la sortie standard.

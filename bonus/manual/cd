@@ -1,0 +1,20 @@
+CD                                              42sh Programmer's Manual                                                CD
+
+NAME
+        cd : Change le dossier dans lequel nous sommes.
+
+DESCRIPTION
+
+        Si aucun(s) parametre(s) n'est precise pour la commande 'cd', l'utilisateur est redirige instantanement
+        au dossier par defaut (celui au 'root').
+
+FLAGS
+
+        cd ~ : Redirige l'utilisateur au dossier par defaut (celui au 'root').
+        
+        cd .. : Redirige l'utilisateur au dossier parent. C'est a dire, le dossier qui est juste avant
+                le dossier actuel.
+        
+        cd - : Redirige l'utilisateur vers le dossier precedent.
+        
+        cd [NAME] : Redirige l'utilisateur vers le dossier precise dans [NAME].

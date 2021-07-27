@@ -1,0 +1,1848 @@
+[01]
+NAME="Path 1"
+SETUP="PATH='/usr/bin:/bin' ; touch file$$"
+CLEAN="rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[01-END]
+
+[02]
+NAME="Path 2"
+SETUP="PATH='/bin' ; touch file$$"
+CLEAN="rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[02-END]
+
+[03]
+NAME="Path 3"
+SETUP="PATH=':/usr/bin:/bin:' ; touch file$$"
+CLEAN="rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[03-END]
+
+[04]
+NAME="Path 4"
+SETUP="touch file$$;PATH=''"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[04-END]
+
+[05]
+NAME="Path 5"
+SETUP="PATH='/tmp:/root/:/bin' ; /usr/bin/touch file$$"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[05-END]
+
+[06]
+NAME="Path 6"
+SETUP="PATH=' ' ; /usr/bin/touch file$$"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[06-END]
+
+[07]
+NAME="Path 7"
+SETUP="PATH='coucou' ; /usr/bin/touch file$$"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[07-END]
+
+[08]
+NAME="Path 8"
+SETUP="PATH='/' ; /usr/bin/touch file$$"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[08-END]
+
+[09]
+NAME="Path 9"
+SETUP="PATH='.mybin' ; /usr/bin/touch file$$ ; /bin/mkdir .mybin ; /bin/cp /bin/ls .mybin/"
+CLEAN="/bin/rm -f file$$ ; /bin/rm -Rf .mybin"
+TESTS=
+  echo 'ls -la /bin .'
+[09-END]
+
+[10]
+NAME="Path 10"
+SETUP="unset PATH ; /usr/bin/touch file$$"
+CLEAN="/bin/rm -f file$$"
+TESTS=
+  echo 'ls -la /bin .'
+[10-END]
+
+
+[11]
+NAME="Just a pwd"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[11-END]
+
+[12]
+NAME="Pipe with builtin"
+SETUP="OLDPATH=$PATH ; PATH='/toto'"
+CLEAN="PATH=$OLDPATH"
+TESTS=
+  echo 'setenv | /bin/grep PATH'
+[12-END]
+
+[13]
+NAME="Check exec"
+SETUP="mkdir bin ; cp /bin/ls bin/cat"
+CLEAN="rm -Rf bin"
+TESTS=
+  echo 'pwd ; cd bin ; ls -l'
+  echo 'cd ..'
+  echo 'bin/cat'
+  sleep 0.5
+  echo 'pwd'
+[13-END]
+
+[14]
+NAME="Check exit"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'exit 25'
+[14-END]
+
+[15]
+NAME="Check non existant bin"
+SETUP="PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'coucou'
+[15-END]
+
+[16]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RED ; export MYBG=1 ; export LVL=42 ; export NOTE=0"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE VENDOR OSTYPE MACHTYPE SHLVL PWD LOGNAME USER GROUP HOST REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv toto'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/bin/env'
+  echo 'setenv titi abcd'
+  echo 'unsetenv tata'
+  echo 'env'
+[16-END]
+
+[17]
+NAME="cd"
+SETUP=""
+CLEAN="rm -Rf plopplop"
+TESTS=
+  echo "mkdir plopplop"
+  echo "cd plopplop"
+  echo "pwd"
+  echo -e "cd -\necho KEY\npwd\ncd /\nls"
+  echo "cd -"
+  echo "ls"
+[17-END]
+
+[18]
+NAME="cd and error messages"
+SETUP="mkdir testdircd ; chmod 000 testdircd"
+CLEAN="chmod 755 testdircd ; rmdir testdircd"
+TESTS=
+  echo "cd testdircd"
+[18-END]
+
+[19]
+NAME="space and tab"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e ""
+  echo -e "ls"
+  echo -e "ls -l"
+  echo -e "ls     -l"
+  echo -e "     ls     -l"
+  echo -e "ls -l     "
+  echo -e "    ls     -l     -a    "
+  echo -e "ls\t"
+  echo -e "\tls"
+  echo -e "\tls\t-l"
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a    \t\t"
+[19-END]
+
+[20]
+NAME="separator ;"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e "    \t  ls  -l;echo toto  ;  ls\t;\techo plop"
+[20-END]
+
+[21]
+NAME="simple pipe"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e "ls /dev | grep tty"
+[21-END]
+
+[22]
+NAME="pipe"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e "ls | grep plop"
+  echo -e "\t ls   -l\t/dev|\tgrep tty"
+[22-END]
+
+[23]
+NAME="multipipe"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e "ls /dev | cat  | tr y Y | grep ttY | cat"
+[23-END]
+
+[26]
+NAME="output redirect"
+SETUP=""
+CLEAN="rm fic"
+TESTS=
+  echo "ls /dev > fic"
+  echo "echo toto"
+  echo "cat fic"
+[26-END]
+
+[27]
+NAME="output double-redirect"
+SETUP=""
+CLEAN="rm fic"
+TESTS=
+  echo "ls /dev > fic"
+  echo "echo toto"
+  echo "echo plop >> fic"
+  echo "ls / >> fic"
+  echo "echo titi"
+  echo "cat fic"
+[27-END]
+
+[28]
+NAME="output redirect on bin files"
+SETUP=""
+CLEAN="rm myls"
+TESTS=
+  echo "cat /bin/ls > myls"
+  echo "chmod 755 myls"
+  echo "./myls"
+[28-END]
+
+[29]
+NAME="input redirect"
+SETUP="/bin/ls /dev > fic"
+CLEAN="rm fic"
+TESTS=
+  echo "grep tty < fic"
+[29-END]
+
+[30]
+NAME="input redirect, output redirect and multi pipe and ; separator"
+SETUP="/bin/ls /dev > fic"
+CLEAN="rm fic ficout ficout2"
+TESTS=
+  echo "grep tty < fic | tr y Y > ficout ; cat ficout | sed s/tt/uu/g > ficout2 ; cat ficout2 | tr u I"
+[30-END]
+
+[31]
+NAME="inception"
+SETUP=""
+CLEAN="rm result result2"
+TESTS=
+  echo "echo ls | /bin/tcsh > result"
+  echo "echo ls | ./42sh > result2"
+  echo "cat result"
+  echo "cat result2"
+[31-END]
+
+[32]
+NAME="redirect output on input"
+SETUP="echo coucou > fic"
+CLEAN="rm fic"
+TESTS=
+  echo "cat fic >> fic"
+  echo "cat fic"
+[32-END]
+
+
+[33]
+NAME="Gestion d'erreur (redirection >>>)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls >>> .tttppeetop"
+[33-END]
+
+[34]
+NAME="Gestion d'erreur (pipe apres redirection)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls > .tttppeetop | grep 42sh"
+[34-END]
+
+[35]
+NAME="Gestion d'erreur (input redirection apres pipe)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls | grep i < .tttppeetop"
+[35-END]
+
+[36]
+NAME="Gestion d'erreur (pipe sans rien)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls |"
+[36-END]
+
+[37]
+NAME="Gestion d'erreur (juste redirection)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ">.tttppeetop"
+[37-END]
+
+[38]
+NAME="Gestion d'erreur (entre pipe)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "cat 42sh | | touch .tttppeetop"
+[38-END]
+
+[39]
+NAME="Gestion d'erreur (pipe debut de chaine)"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "|ls > .tttppeetop"
+[39-END]
+
+[40]
+NAME="Backquotes"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "echo `ls`"
+[40-END]
+
+[41]
+NAME="Backquotes"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "echo `python2 -c "print 'A'*1000"`"
+[41-END]
+
+[42]
+NAME="Globbing"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls -R ../*"
+[42-END]
+
+[43]
+NAME="Globbing part 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls -Rlah *"
+[43-END]
+
+[44]
+NAME="Parentheses"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "(ls | cat -e) | cat -e"
+[44-END]
+
+[45]
+NAME="OU et ET"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "ls || ls -R || lol && ls ../ -R && echo salut"
+[45-END]
+
+[46]
+NAME="Mix medium 1"
+SETUP=""
+CLEAN="rm .tttppeetop"
+TESTS=
+  echo "ls > .tttppeetop ; cat < .tttppeetop > .raclette ; grep < .raclette i | cat -e | wc -l > .tttppeetop ; cat .tttppeetop"
+[46-END]
+
+[47]
+NAME="Mix medium 2"
+SETUP=""
+CLEAN="rm .tttppeetop"
+TESTS=
+  echo ">    .tttppeetop ls ../ -lR ; ; ; ;; ls >>   .tttppeetop -l ; echo .tttppeetop oui ; cat .tttppeetop"
+[47-END]
+
+[48]
+NAME="Mix medium 3"
+SETUP=""
+CLEAN="rm .tar; rm .tttppeetop"
+TESTS=
+  echo "ls ../ -lR > .tttppeetop && <.tttppeetop cat>.tttppeetop; <.tttppeetop cat| cat >> .tar; ; cat .tar ;"
+[48-END]
+
+[49]
+NAME="Hard"
+SETUP=""
+CLEAN="rm .raclette ; rm .tttppeetop"
+TESTS=
+  echo "> .tttppeetop ls      -l ; echo oui > .raclette ; cat < .tttppeetop | grep i >> .raclette ; ls -l /dev | grep tty | grep 3 >> .raclette ; < .raclette cat | grep t | > .tttppeetop wc -c ; cat .tttppeetop"
+[49-END]
+
+[50]
+NAME="cd-"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'cd -'
+  echo 'ls -l'
+  echo 'cd ..'
+  echo 'ls'
+[50-END]
+
+[51]
+NAME="Nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+[51-END]
+
+[52]
+NAME="Exec two command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls /etc'
+  echo 'cat /etc/resolv.conf'
+[52-END]
+
+[53]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[53-END]
+
+[54]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[54-END]
+
+[55]
+NAME="run commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc/resolv.conf'
+  sleep 0.5
+  echo 'ls -l /etc'
+  sleep 0.5
+  echo 'pwd'
+[55-END]
+
+[56]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+[56-END]
+
+[57]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[57-END]
+
+[58]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[58-END]
+
+[59]
+NAME="Launch DivZero program with core dump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./my_divzero"
+[59-END]
+
+[60]
+NAME="Launch SegFault program without core dump"
+SETUP="ulimit -c 0 ; export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./my_segfault"
+[60-END]
+
+[61]
+NAME="Testing simple pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /etc | grep sh"
+[61-END]
+
+[62]
+NAME="setenv and unsetenv 2"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv titi toto'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+  echo 'setenv babiss shagata'
+  echo 'env'
+[62-END]
+
+[63]
+NAME="cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /etc'
+  echo 'ls -l'
+[63-END]
+
+[64]
+NAME="cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo '/bin/pwd'
+  echo 'cd /usr/bin'
+  echo '/bin/pwd'
+[64-END]
+
+[65]
+NAME="cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '/bin/pwd'
+  echo '/bin/pwd'
+[65-END]
+
+[66]
+NAME="cd-"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd'
+  echo 'cd /bin'
+  echo 'cd -'
+  echo 'ls -l'
+  echo 'cd ..'
+  echo 'ls'
+[66-END]
+
+[67]
+NAME="cd-"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd'
+  echo '/bin/pwd'
+  echo 'cd /usr'
+  echo '/bin/ls'
+  echo 'cd -'
+  echo '/bin/pwd'
+  echo '/bin/ls'
+[67-END]
+
+[68]
+NAME="cd-"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd'
+  echo '/bin/pwd'
+  echo 'cd /usr'
+  echo '/bin/ls'
+  echo 'cd -'
+  echo '/bin/pwd'
+  echo '/bin/ls'
+[68-END]
+
+[69]
+NAME="which easy test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which ls'
+  echo 'ls'
+[69-END]
+
+[70]
+NAME="which error test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which'
+[70-END]
+
+[71]
+NAME="advcanced which test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which ls cat cd'
+[71-END]
+
+[72]
+NAME="advcanced which test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which ls cat cd'
+[72-END]
+
+[73]
+NAME="basic which test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which tree'
+[73-END]
+
+[74]
+NAME="basic which error test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which caca'
+[74-END]
+
+[75]
+NAME="where error test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'where caca'
+[75-END]
+
+[76]
+NAME="basic where error test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'where'
+[76-END]
+
+[78]
+NAME="advanced where test 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias t ls'
+  echo 'alias r ps'
+  echo 'alias ok k'
+  echo 'where t r ok'
+[78-END]
+
+[79]
+NAME="advanced wich test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias t ls'
+  echo 'which t'
+[79-END]
+
+[80]
+NAME="advanced wich test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias t ls'
+  echo 'alias r ps'
+  echo 'alias ok j'
+  echo 'which t'
+  echo 'which r t ok'
+[80-END]
+
+[81]
+NAME="alias extra hard test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias aaaaa ls'
+  echo 'alias bbbbb cd'
+  echo 'alias egrep egrep --color=auto'
+  echo 'alias fgrep fgrep --color=auto'
+  echo 'alias grep grep --color=auto'
+  echo 'alias l. ls -d . .. --color=auto'
+  echo 'alias ll ls -l --color=auto'
+  echo 'alias ls ls --color=auto'
+  echo 'alias xzegrep xzegrep --color=auto'
+  echo 'alias xzfgrep xzfgrep --color=auto'
+  echo 'alias xzgrep xzgrep --color=auto'
+  echo 'alias zegrep zegrep --color=auto'
+  echo 'alias zfgrep zfgrep --color=auto'
+  echo 'alias zgrep zgrep --color=auto'
+  echo 'alias'
+[81-END]
+
+
+[82-bis]
+NAME="alias extra hard test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'alias 99999 ls'
+  echo 'alias zzzzz ls'
+  echo 'alias aaaaa ls'
+  echo 'alias'
+[82-bis-END]
+
+[001]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[001-END]
+
+[002]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[002-END]
+
+[003]
+NAME="run commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc/resolv.conf'
+  sleep 0.5
+  echo 'ls -l /bin'
+  sleep 0.5
+  echo 'pwd'
+[003-END]
+
+[004]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+[004-END]
+
+[005]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[005-END]
+
+[006]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[006-END]
+
+[007]
+NAME="cat < Makefile > .toto"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "cat < Makefile > .toto"
+[007-END]
+
+[008]
+NAME="|"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "|"
+[008-END]
+
+[0012]
+NAME="PIPE with grep doesn't work"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | cat | grep dfsdfsdfsdfsdf'
+[0012-END]
+
+[0013]
+NAME="redirection >"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls > .testlolmdr'
+  echo 'echo bite'
+  echo '/bin/grep mysh .testlolmdr >> .testlolmdr'
+  echo '/bin/grep sh .testlolmdr >> .testlolmdr'
+  echo 'cat .testlolmdr'
+  echo 'rm .testlolmdr'
+[0013-END]
+
+[0014]
+NAME="slut"
+SETUP="echo -e 'toto\nplop\nplip\n' > salut"
+CLEAN="rm salut"
+TESTS=
+  echo 'cat salut'
+  echo '< salut wc -l'
+  echo 'wc <salut -l'
+  echo 'grep -i LO < salut'
+  echo 'grep -i LO < salut | wc -l'
+[0014-END]
+
+[0015]
+NAME="cat < Makefile"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat < Makefile'
+[0015-END]
+
+[0016]
+NAME="<Makefile cat|> .lol wc -l "
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '< Makefile cat|>.lol wc -l'
+  echo 'cat .lol'
+  echo 'rm .lol'
+[0016-END]
+
+[0019]
+NAME="cat << <"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat << Makefile < Makefile'
+[0019-END]
+
+
+[0020]
+NAME="cat >> .m > .lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat >> .m > .lol'
+[0020-END]
+
+
+[0021]
+NAME="cat << Makefile >> .lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat Makefile > .lol'
+  echo 'cat << Makefile >> .lol'
+  echo 'cat .lol'
+  echo 'rm .lol'
+[0021-END]
+
+[0023]
+NAME="ls | cat < Makefile > .lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | cat < Makefile > .lol'
+[0023-END]
+
+[0024]
+NAME="ls | cat -e > .lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | cat -e > .lol'
+  echo 'cat .lol'
+  echo 'rm .lol'
+[0024-END]
+
+[0025]
+NAME="cat < Makefile | cat -e > .lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat < Makefile | cat -e > .lol'
+  echo 'cat .lol'
+  echo 'rm .lol'
+[0025-END]
+
+[0027]
+NAME="(OPTIONNEL) only 1 GUILLEMET"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '"'
+[0027-END]
+
+[0029]
+NAME="(OPTIONNEL) \"lol\""
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '"lol"'
+[0029-END]
+
+[0030]
+NAME="ls |"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls |'
+[0030-END]
+
+[0031]
+NAME="| ;"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '| ;'
+[0031-END]
+
+[0032]
+NAME="ls ||||| cat"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls ||||| cat'
+[0032-END]
+
+[0033]
+NAME="NULL"
+SETUP=""
+CLEAN=""
+TESTS=
+  cat /dev/null
+[0033-END]
+
+[0034]
+NAME="Empty"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ''
+[0034-END]
+
+[0035]
+NAME="Simple Exec"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'id'
+[0035-END]
+
+[0036]
+NAME="Run simple commands"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls'
+  echo 'pwd'
+  echo 'ls -l'
+[0036-END]
+
+[0037]
+NAME="wrong simple command"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'Sahel est con'
+[0037-END]
+
+[0038]
+NAME="PATH 1"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '/ls'
+[0038-END]
+
+[0039]
+NAME="PATH 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '/usr/bin/ls'
+[0039-END]
+
+[0040]
+NAME="PATH 3"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'setenv PATH caca'
+  echo 'ls'
+[0040-END]
+
+[0041]
+NAME="PATH 4"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'setenv PATH /usr/bin:'
+  echo 'ls'
+[0041-END]
+
+[0042]
+NAME="PATH 5"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'setenv PATH /usr/bi'
+  echo 'ls'
+[0042-END]
+
+[0043]
+NAME="setenv and unsetenv"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'setenv ok ok ok'
+[0043-END]
+
+[0044]
+NAME="cd"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls'
+[0044-END]
+
+[0045]
+NAME="cd error"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cd ok ok ok'
+[0045-END]
+
+[0046]
+NAME="cd error 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cd /root'
+[0046-END]
+
+[0047]
+NAME="cd -"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls'
+  echo 'cd -'
+  echo 'ls'
+[0047-END]
+
+[0048]
+NAME="pipe with builtins"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'env | grep XDG'
+[0048-END]
+
+[0049]
+NAME="pipe"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | cat -e | grep Ma'
+[0049-END]
+
+[0050]
+NAME="ls >"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls >'
+[0050-END]
+
+[0052]
+NAME="cd - without OLDPWD"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'unsetenv OLDPWD'
+  echo 'cd'
+  echo 'cd -'
+  echo 'ls'
+[0052-END]
+
+[0053]
+NAME="ls | ;"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | ;'
+[0053-END]
+
+[0054]
+NAME="ls | ls > ;"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | ls > ;'
+[0054-END]
+
+[0055]
+NAME="ls ; ls > out"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls ; ls > out'
+  echo 'rm out'
+[0055-END]
+
+[0056]
+NAME=";ls > out"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ';ls>out'
+  echo 'rm out'
+[0056-END]
+
+[0057]
+NAME="<< lol"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '<< lol'
+[0057-END]
+
+[0058]
+NAME="> out"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '> out'
+[0058-END]
+
+[0059]
+NAME="ls ; ; ; ; "
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls ; ; ; '
+[0059-END]
+
+[0060]
+NAME="ls ; ; ; | ls"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls ; ; ; | ls'
+[0060-END]
+
+[0061]
+NAME="ls | > z"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | > z'
+[0061-END]
+
+[0062]
+NAME="Creation of file with bad command : sdf > a"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'sdf > a'
+  echo 'ls'
+  echo 'rm a'
+[0062-END]
+
+[0064]
+NAME="space"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ' '
+[0064-END]
+
+[0065]
+NAME="tab"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e '\t'
+[0065-END]
+
+[0066]
+NAME="space and tab"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e '\t \t   \t'
+[0066-END]
+
+[0067]
+NAME="Plus de 10000 character aleatoire"
+SETUP=""
+CLEAN=""
+TESTS=
+  cat .tmp
+[0067-END]
+
+[0068]
+NAME=";;;;"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ';;;;'
+[0068-END]
+
+[0069]
+NAME="||||"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '||||'
+[0069-END]
+
+[0070]
+NAME="env -i"
+SETUP=""
+CLEAN=""
+TESTS=
+  env -i
+[0070-END]
+
+[0071]
+NAME="10000 \\n"
+SETUP=""
+CLEAN=""
+TESTS=
+  cat .tmp2
+[0071-END]
+
+[0072]
+NAME="id"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'id'
+[0072-END]
+
+[0074]
+NAME=" ; ; ; ; "
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ' ; ; ; ; '
+[0074-END]
+
+[0075]
+NAME=" | | | | "
+SETUP=""
+CLEAN=""
+TESTS=
+  echo ' | | | | '
+[0075-END]
+
+[0076]
+NAME="\t | \t | \t | \t | \t | \t"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e '\t | \t | \t | \t | \t'
+[0076-END]
+
+[0077]
+NAME="\t ; \t ; \t ; \t ; \t ; \t"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo -e '\t ; \t ; \t ; \t ; \t'
+[0077-END]
+
+[0078]
+NAME="ls | cat -e < Makefile"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls | cat -e < Makefile'
+[0078-END]
+
+[0081]
+NAME="./mysh inner ./mysh"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo './mysh'
+  echo 'ls'
+  cat /dev/null
+  echo 'ls'
+[0081-END]
+
+[0082]
+NAME="bad command"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'sdf sdf sdf'
+[0082-END]
+
+[0084]
+NAME="file not found"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'rm -rf .sdfsdf'
+  echo 'cat < .sdfsdf'
+[0084-END]
+
+[0085]
+NAME="grep"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat Makefile | grep b | grep i'
+[0085-END]
+
+[0087]
+NAME="setenv az%9"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'setenv ae%9'
+[0087-END]
+
+[0088]
+NAME="./Makefile"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo './Makefile'
+[0088-END]
+
+[0089]
+NAME="./include"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo './include'
+[0089-END]
+
+[0090]
+NAME="enve"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'enve'
+[0090-END]
+
+[0091]
+NAME="cdenve -"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cdenve -'
+[0091-END]
+
+[0092]
+NAME="		 ls			 "
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '			 ls		'
+[0092-END]
+
+[0093]
+NAME="/ls"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '/ls'
+[0093-END]
+
+[0094]
+NAME="cat -e < olala | grep b"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'cat -e < olala | grep b'
+[0094-END]
+
+[0096]
+NAME="env | grep PATH"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'env | grep PATH'
+[0096-END]
+
+[0097]
+NAME="< zert cat"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '< zert cat'
+[0097-END]
+
+[0098]
+NAME="< Makefile cat -e"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '< Makefile cat -e'
+[0098-END]
+
+[0099]
+NAME="< Makefile cat >> .lol -e"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '< Makefile cat >> .lol -e'
+[0099-END]
+
+[00100]
+NAME="THE END | GG"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'THE END | GG'
+[00100-END]
+
+[00101]
+NAME="42sh"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo '42sh'
+  echo 'ls'
+[00101-END]
+
+[00102]
+NAME="env -i et ls"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'ls'
+  env -i
+[00102-END]
+
+[00105]
+NAME="WHERE 3"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where sdf ls grep sdf'
+[00105-END]
+
+[00106]
+NAME="WHERE 4"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where sdf'
+[00106-END]
+
+[00107]
+NAME="ALIAS 1"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'alias ls ls -l'
+  echo 'ls'
+[00107-END]
+
+[00108]
+NAME="ALIAS 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'alias a ls'
+  echo 'a'
+[00108-END]
+
+[00109]
+NAME="ALIAS 3"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'alias ls ll'
+  echo 'ls'
+[00109-END]
+
+[00111]
+NAME="REPEAT 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'repeat 4e ls'
+[00111-END]
+
+[00113]
+NAME="WHICH 1"
+TESTS=
+  echo 'which ls'
+[00113-END]
+
+[00114]
+NAME="WHICH 2"
+TESTS=
+  echo 'alias ll ls -l'
+  echo 'which ll'
+[00114-END]
+
+[00115]
+NAME="WHICH 3"
+TESTS=
+  echo 'setenv PATH'
+  echo 'which ls'
+[00115-END]
+
+[00118-b]
+NAME="WHERE 2"
+TESTS=
+  echo 'alias ll ls -l'
+  echo 'where ll'
+[00118-b-END]
+
+
+[00119]
+NAME="WHERE 3"
+TESTS=
+  echo 'setenv PATH'
+  echo 'where ls'
+[00119-END]
+
+[00122]
+NAME="ECHO 1"
+TESTS=
+  echo 'echo alias ls ls -l'
+  echo 'echo $?'
+[00122-END]
+
+[00123]
+NAME="EXIT"
+TESTS=
+  echo 'exit'
+[00123-END]
+
+[00124]
+NAME="EXIT NOT_A_NUMBER"
+TESTS=
+  echo 'exit banana'
+[00124-END]
+
+[00125]
+NAME="EXIT NORMAL"
+TESTS=
+  echo 'exit 123'
+[00125-END]
+
+[00128]
+NAME="EXIT NEGATIVE"
+TESTS=
+  echo 'exit -12'
+[00128-END]
+
+[00129]
+NAME="REPEAT 0"
+TESTS=
+  echo 'repeat'
+[00129-END]
+
+[00131]
+NAME="where /usr/bin/ls"
+TESTS=
+  echo 'where /usr/bin/ls'
+[00131-END]
+
+[00132]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach i (1 2 3 4 5)'
+  echo 'echo salut'
+  echo 'end'
+[00132-END]
+
+[00133]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach i (1 2)'
+  echo 'ls'
+  echo 'end'
+[00133-END]
+
+[00134]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach i (1 2 3)'
+  echo 'ls'
+  echo 'pwd'
+  echo 'end'
+[00134-END]
+
+[00135]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach (1 2 3)'
+[00135-END]
+
+[00137]
+NAME="repeat 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat'
+[00137-END]
+
+[00138]
+NAME="repeat 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat 2'
+[00138-END]
+
+[00139]
+NAME="repeat 3"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat 66'
+[00139-END]
+
+[00140]
+NAME="repeat 4"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat 24 ls'
+[00140-END]
+
+[00141]
+NAME="repeat 5"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat 2 ls -a'
+[00141-END]
+
+[00142]
+NAME="repeat 6"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat aze 55'
+[00142-END]
+
+[00143]
+NAME="repeat 7"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat aze ls'
+[00143-END]
+
+[00144]
+NAME="repeat 8"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'repeat 4dd ls pwd'
+[00144-END]
+
+[00145]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach i (1 2 3)'
+  echo 'end'
+[00145-END]
+
+[00146]
+NAME="faux riche test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'foreach'
+[00146-END]
+
+[000103]
+NAME="WHERE 1"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where ls'
+[000103-END]
+
+[000104]
+NAME="WHERE 2"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where ls grep ls'
+[000104-END]
+
+
+[000105]
+NAME="WHERE 3"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where sdf ls grep sdf'
+[000105-END]
+
+[000106]
+NAME="WHERE 4"
+SETUP=""
+CLEAN=""
+TESTS=
+  echo 'where sdf'
+[000106-END]
+[000117]
+NAME="WHERE 1"
+TESTS=
+  echo 'where ls'
+[000117-END]
+
+[000118]
+NAME="WHERE 2"
+TESTS=
+  echo 'alias ll ls -l'
+  echo 'where ll'
+[000118-END]
+
+[000119]
+NAME="WHERE 3"
+TESTS=
+  echo 'setenv PATH'
+  echo 'where ls'
+[000119-END]
+
+[000131]
+NAME="where /usr/bin/ls"
+TESTS=
+  echo 'where /usr/bin/ls'
+[000131-END]
+
+[000132]
+NAME="where /usr/bin/ls"
+TESTS=
+  echo 'where /usr/bin/ls ls'
+[000132-END]

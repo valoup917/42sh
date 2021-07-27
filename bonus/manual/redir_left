@@ -1,0 +1,12 @@
+REDIRLEFT                                          42sh Programmer's Manual                                        REDIRLEFT
+
+NAME
+        redirection gauche : Affiche le contenu d'un fichier.
+
+DESCRIPTION
+
+        La redirection simple vers la gauche, affiche le contenu d'un fichier sur la sortie
+        standard de l'utilisateur.
+
+        Exemple de commande :
+            cat < file.txt
