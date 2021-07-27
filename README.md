@@ -45,8 +45,8 @@ Pour lancer le shell, lancez la commande suivante :
 make ; ./42sh
 
 Contributeurs :
-- Yoel Edery
 - Valentin Fouillet
 - Illyas Chihi
 - Thomas Willson
 - Yohan Henry
+- Yoel Edery
